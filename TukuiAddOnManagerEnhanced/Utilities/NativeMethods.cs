@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace TukuiAddOnManagerEnhanced
+namespace TukuiAddOnManagerEnhanced.Utilities
 {
 	public enum DefaultMonitor
 	{

@@ -57,6 +57,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Json\TukuiClient.cs" />
+    <Compile Include="Utilities\SafeGenericDependencyProperties.cs" />
+    <Compile Include="Utilities\TukuiActionCallback.cs" />
+    <Page Include="DEV\DevLoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -66,6 +73,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="DEV\DevLoginWindow.xaml.cs">
+      <DependentUpon>DevLoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Json\TukuiAddOn.cs" />
     <Compile Include="Json\TukuiProject.cs" />
     <Compile Include="Json\TukuiUser.cs" />
@@ -75,7 +85,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assests\Artwork\UpperRightMenuBar%28uHD%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\LoginRibbon%28uHD%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

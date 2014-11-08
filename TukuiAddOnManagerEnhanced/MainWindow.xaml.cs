@@ -42,6 +42,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
 
+using TukuiAddOnManagerEnhanced.DEV;
+using TukuiAddOnManagerEnhanced.Utilities;
+
 namespace TukuiAddOnManagerEnhanced
 {
 	/// <summary>
@@ -86,7 +89,14 @@ namespace TukuiAddOnManagerEnhanced
 			}
 		}
 
-		private void MainWindow_Loaded( object sender, RoutedEventArgs e ) { }
+		private void MainWindow_Loaded( object sender, RoutedEventArgs e )
+		{
+#if DEBUG
+			DevLoginWindow devWindow = new DevLoginWindow( );
+			devWindow.Show( );
+#endif
+
+		}
 
 		#endregion Window Event Handlers
 

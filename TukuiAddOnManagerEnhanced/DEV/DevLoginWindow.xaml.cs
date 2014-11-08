@@ -14,6 +14,9 @@ using System.Windows.Shapes;
 
 using Newtonsoft.Json;
 
+using TukuiAddOnManagerEnhanced.Json;
+using TukuiAddOnManagerEnhanced.Utilities;
+
 namespace TukuiAddOnManagerEnhanced.DEV
 {
 	/// <summary>
@@ -21,12 +24,21 @@ namespace TukuiAddOnManagerEnhanced.DEV
 	/// </summary>
 	public partial class DevLoginWindow : Window
 	{
+		TukuiClient client;
+
 		public DevLoginWindow( )
 		{
 			InitializeComponent( );
+
+			client = new TukuiClient( );
 		}
 
 		private void Button_Click( object sender, RoutedEventArgs e )
+		{
+			client.BeginLogin( UserName.Text, Password.Text, TukuiActionCallback_Handler );
+		}
+
+		private void TukuiActionCallback_Handler( object sender, TukuiActionCallbackEventArgs e )
 		{
 
 		}
