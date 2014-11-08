@@ -81,6 +81,7 @@
             <RowDefinition Height="45" />
             <RowDefinition Height="21" />
             <RowDefinition />
+            <RowDefinition Height="4" />
         </Grid.RowDefinitions>
         
         <!-- Title Bar -->
@@ -115,9 +116,14 @@
                 <TextBlock x:Name="SubMenuTextButton_UpdateAll" Text="UPDATE ALL" Style="{StaticResource Style_SubMenuTextButton}" />
                 <TextBlock x:Name="SubMenuTextButton_Refresh"   Text="REFRESH"    Style="{StaticResource Style_SubMenuTextButton}" />
                 <TextBlock x:Name="SubMenuTextButton_Settings"  Text="SETTINGS"   Style="{StaticResource Style_SubMenuTextButton}" />
-                <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"   Style="{StaticResource Style_SubMenuTextButton}" />
+                <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"    Style="{StaticResource Style_SubMenuTextButton}" />
             </StackPanel>
         </Grid>
 
+        <!-- Body -->
+        
+
+        <!-- Bottom Line -->
+        <Rectangle Grid.Row="4" Fill="#FF68B6ED" />
     </Grid>
 </Window>
