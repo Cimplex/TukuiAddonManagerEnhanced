@@ -37,12 +37,13 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-
 using TukuiAddOnManagerEnhanced.DEV;
+using TukuiAddOnManagerEnhanced.Json;
 using TukuiAddOnManagerEnhanced.Utilities;
 
 namespace TukuiAddOnManagerEnhanced
@@ -52,6 +53,8 @@ namespace TukuiAddOnManagerEnhanced
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private TukuiClient MyClient;
+
 		#region Constructors (Inits)
 
 		public MainWindow( )
@@ -71,6 +74,9 @@ namespace TukuiAddOnManagerEnhanced
 			this.StateChanged += MainWindow_StateChanged;
 
 			// Register UI Controls Events
+
+			// Init Animations
+			InitAnimations( );
 		}
 
 		#endregion Constructors (Inits)
@@ -129,5 +135,131 @@ namespace TukuiAddOnManagerEnhanced
 		}
 
 		#endregion Windows State Buttons (Title Bar)
+
+
+		#region Sub Menu Buttons - Logic
+		private void SubMenuTextButton_MouseDown( object sender, MouseButtonEventArgs e )
+		{
+			// Make the Sub Menu Buttons (TextBlocks) act like Buttons
+			FrameworkElement currentElement = sender as FrameworkElement;
+			currentElement.CaptureMouse( );
+		}
+
+		private void SubMenuTextButton_MouseUp( object sender, MouseButtonEventArgs e )
+		{
+			// Make the Sub Menu Buttons (TextBlocks) act like Buttons
+			FrameworkElement currentElement = sender as FrameworkElement;
+			
+			if (currentElement.IsMouseCaptured)
+			{
+				currentElement.ReleaseMouseCapture( );
+
+				if (currentElement.IsMouseOver)
+				{
+					// OnClicked!
+					switch(currentElement.Name)
+					{
+						case "SubMenuTextButton_UpdateAll":
+							break;
+
+						case "SubMenuTextButton_Refresh":
+							break;
+
+						case "SubMenuTextButton_Settings":
+							break;
+
+						case "SubMenuTextButton_Logout": Clicked_Logout( ); break;
+					}
+				}
+			}
+		}
+
+
+
+		bool loginWindowVisible = true;
+		private void Clicked_Logout( )
+		{
+			if ( loginWindowVisible )
+			{
+				Animate_LoginRibbon_Hide( );
+			}
+			else
+			{
+				Animate_LoginRibbon_Show( );
+			}
+			loginWindowVisible = !loginWindowVisible;
+		}
+
+		#endregion Sub Menu Buttons - Logic
+
+		#region Animations
+
+		public void InitAnimations( )
+		{
+			LoginRibbonAnimate.RenderTransform = new TranslateTransform( );
+		}
+
+		public void Animate_LoginRibbon_Show( )
+		{
+			TranslateTransform currentTransform = LoginRibbonAnimate.RenderTransform as TranslateTransform;
+
+			DoubleAnimation daMove = new DoubleAnimation( )
+			{
+				From = -30,
+				To = 0,
+				Duration = TimeSpan.FromMilliseconds( 300 ),
+				DecelerationRatio = 1,
+			};
+			
+			DoubleAnimation daFade = new DoubleAnimation( )
+			{
+				From = 0,
+				To = 1,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				BeginTime = TimeSpan.FromMilliseconds( 100 ),
+			};
+
+			// Reset the Opacity to 0
+			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, null );
+			LoginRibbonAnimate.Opacity = 0;
+
+			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
+			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, daFade );
+
+			// Force Show the Container for the Ribbon
+			LoginRibbon.Visibility = Visibility.Visible;
+		}
+
+		public void Animate_LoginRibbon_Hide( )
+		{
+			TranslateTransform currentTransform = LoginRibbonAnimate.RenderTransform as TranslateTransform;
+
+			DoubleAnimation daMove = new DoubleAnimation( )
+			{
+				From = 0,
+				To = -30,
+				Duration = TimeSpan.FromMilliseconds( 300 ),
+				AccelerationRatio = 1,
+			};
+
+			DoubleAnimation daFade = new DoubleAnimation( )
+			{
+				From = 1,
+				To = 0,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+			};
+
+			// Reset the Opacity to 0
+			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, null );
+			LoginRibbonAnimate.Opacity = 0;
+
+			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
+			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, daFade );
+
+			// When the animation is complete, hide the login ribbon's container
+			daFade.Completed += ( object _sender, EventArgs _e ) => LoginRibbon.Visibility = Visibility.Collapsed;
+		}
+
+		#endregion Animations
 	}
 }

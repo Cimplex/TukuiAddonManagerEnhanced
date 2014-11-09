@@ -81,7 +81,7 @@
             <RowDefinition Height="45" />
             <RowDefinition Height="21" />
             <RowDefinition />
-            <RowDefinition Height="4" />
+            <RowDefinition Height="8" />
         </Grid.RowDefinitions>
         
         <!-- Title Bar -->
@@ -113,33 +113,41 @@
         <!-- Sub-Menu Ribbon -->
         <Grid Grid.Row="2" Margin="8,0,55,0" SnapsToDevicePixels="True" >
             <StackPanel x:Name="SubMenuItems" HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock x:Name="SubMenuTextButton_UpdateAll" Text="UPDATE ALL" Style="{StaticResource Style_SubMenuTextButton}" />
-                <TextBlock x:Name="SubMenuTextButton_Refresh"   Text="REFRESH"    Style="{StaticResource Style_SubMenuTextButton}" />
-                <TextBlock x:Name="SubMenuTextButton_Settings"  Text="SETTINGS"   Style="{StaticResource Style_SubMenuTextButton}" />
-                <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"    Style="{StaticResource Style_SubMenuTextButton}" />
+                <TextBlock x:Name="SubMenuTextButton_UpdateAll" Text="UPDATE ALL" Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                <TextBlock x:Name="SubMenuTextButton_Refresh"   Text="REFRESH"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                <TextBlock x:Name="SubMenuTextButton_Settings"  Text="SETTINGS"   Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
             </StackPanel>
         </Grid>
 
         <!-- Body -->
         <Grid Grid.Row="3" SnapsToDevicePixels="True" >
+
+            <Rectangle Fill="Blue" Margin="329,13,0,213" />
             
-            <Grid x:Name="LoginRibbon" Height="90" Margin="8,8,8,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="148" />
-                    <ColumnDefinition Width="80" />
-                </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="0" Fill="#FF4D4D4D" />
-                <Rectangle Grid.Column="2" Width="80" Fill="#FF4D4D4D" />
-                <Image Grid.Column="1" x:Name="LoginRibbonImage"  Width="220" Margin="-36,0,-36,-65" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                <Grid Grid.Column="1" Margin="-36,21,-36,-65" >
-                    <TextBlock Text="USERNAME / PASSWORD" Margin="0,8,0,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                    <TextBox Height="28" Width="198" Margin="0,36,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                    <TextBox Height="28" Width="198" Margin="0,68,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                    <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
+            
+            <!-- Login Ribbon -->
+            <Grid Visibility="Collapsed" x:Name="LoginRibbon" Margin="8,8,8,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ClipToBounds="True" >
+                <Grid x:Name="LoginRibbonAnimate">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="148" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.Column="0" Height="90" Fill="#FF4D4D4D" VerticalAlignment="Top" />
+                    <Rectangle Grid.Column="2" Width="80" Height="90" Fill="#FF4D4D4D" VerticalAlignment="Top" />
+                    <Image Grid.Column="1" x:Name="LoginRibbonImage" VerticalAlignment="Top" Width="220" Margin="-36,0,-36,-65" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    <Grid Grid.Column="1" Margin="-36,21,-36,0" VerticalAlignment="Top" Height="134" >
+                        <TextBlock Text="USERNAME / PASSWORD" Margin="0,8,0,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                        <TextBox Height="28" Width="198" Margin="0,36,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                        <TextBox Height="28" Width="198" Margin="0,68,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                        <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
+                    </Grid>
                 </Grid>
             </Grid>
+            
         </Grid>
+        
 
         <!-- Bottom Line -->
         <Rectangle Grid.Row="4" Fill="#FF68B6ED" />
