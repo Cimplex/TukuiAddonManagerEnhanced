@@ -130,6 +130,20 @@
   <ItemGroup>
     <Resource Include="Assests\Artwork\LoginRibbon%28uHD%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Left%28Clicked%29.png" />
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Left.png" />
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Right%28Clicked%29.png" />
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Left%28Donate%29.png" />
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Right%28Donate%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Left%28Premium%29.png" />
+    <Resource Include="Assests\Artwork\SubSubMenuButton-Right%28Premium%29.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

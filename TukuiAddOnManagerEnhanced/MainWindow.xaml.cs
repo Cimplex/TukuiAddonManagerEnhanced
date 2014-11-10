@@ -176,7 +176,7 @@ namespace TukuiAddOnManagerEnhanced
 
 
 
-		bool loginWindowVisible = true;
+		bool loginWindowVisible = false;
 		private void Clicked_Logout( )
 		{
 			if ( loginWindowVisible )
@@ -253,11 +253,13 @@ namespace TukuiAddOnManagerEnhanced
 			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, null );
 			LoginRibbonAnimate.Opacity = 0;
 
+			// When the animation is complete, hide the login ribbon's container
+			daFade.Completed += ( object _sender, EventArgs _e ) => LoginRibbon.Visibility = Visibility.Collapsed;
+
 			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
 			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, daFade );
 
-			// When the animation is complete, hide the login ribbon's container
-			daFade.Completed += ( object _sender, EventArgs _e ) => LoginRibbon.Visibility = Visibility.Collapsed;
+			
 		}
 
 		#endregion Animations
