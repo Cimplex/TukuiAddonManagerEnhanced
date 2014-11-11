@@ -5,8 +5,14 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 using TukuiAddOnManagerEnhanced.Json;
 using TukuiAddOnManagerEnhanced.Utilities;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Windows.Media;
 
 namespace TukuiAddOnManagerEnhanced.Json
 {
@@ -14,32 +20,56 @@ namespace TukuiAddOnManagerEnhanced.Json
 	{
 		// Dependency Property that is Thread Safe
 		public GenericDependencyProperty<TukuiClient, TukuiUser> CurrentUser;
+		public GenericDependencyProperty<TukuiClient, ImageSource> UserThumbnail;
 
 		public TukuiClient( )
 		{
 			CurrentUser = new GenericDependencyProperty<TukuiClient, TukuiUser>( this, "CurrentUser", null );
+			UserThumbnail = new GenericDependencyProperty<TukuiClient, ImageSource>( this, "UserThumbnail", null );
 		}
 
 		public void BeginLogin( String Username, String Password, TukuiActionCallback Callback )
 		{
-			Thread thread = new Thread( new ThreadStart( ( ) =>
+			ThreadPool.QueueUserWorkItem(
+				o => {
+					//http://tukui.org/api.php?username=DrPepper&password=ItTasteSoGoodHihi
+
+					using( WebClient client = new WebClient() )
+					{
+						Uri myUrl = new Uri( "http://tukui.org/api.php?username="
+							+ System.Net.WebUtility.UrlEncode( Username )
+							+ "&password="
+							+ System.Net.WebUtility.UrlEncode( Password ) );
+
+						string jsonResult = client.DownloadString( myUrl.AbsoluteUri );
+						List<TukuiUser> user = JsonConvert.DeserializeObject<List<TukuiUser>>( jsonResult );
+						CurrentUser.SafeValue = user[0];
+
+						if ( CurrentUser.SafeValue.status == "OK")
+						{
+							UpdateImage( CurrentUser.SafeValue.avatar );
+						}
+					}
+				} );
+		}
+
+		private void UpdateImage( string imageURL )
+		{
+			var webClient = new WebClient( );
+			var url = new Uri( imageURL, UriKind.Absolute );
+			var buffer = webClient.DownloadData( url );
+			var bitmapImage = new BitmapImage( );
+
+			using ( var stream = new MemoryStream( buffer ) )
 			{
-				//http://tukui.org/api.php?username=DrPepper&password=ItTasteSoGoodHihi
+				bitmapImage.BeginInit( );
+				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapImage.StreamSource = stream;
+				bitmapImage.EndInit( );
+				bitmapImage.Freeze( );
+			}
 
-				using( WebClient client = new WebClient() )
-				{
-					Uri myUrl = new Uri( "http://tukui.org/api.php?username="
-						+ System.Net.WebUtility.UrlEncode( Username )
-						+ "&password="
-						+ System.Net.WebUtility.UrlEncode( Password ) );
-
-					string jsonResult = client.DownloadString( myUrl.AbsoluteUri );
-					
-				}
-
-				
-			} ) );
-			thread.Start( );
+			UserThumbnail.SafeValue = bitmapImage;
 		}
 
 		public void Logout( )

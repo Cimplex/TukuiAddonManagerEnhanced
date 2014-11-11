@@ -31,6 +31,7 @@ namespace TukuiAddOnManagerEnhanced.DEV
 			InitializeComponent( );
 
 			client = new TukuiClient( );
+			this.DataContext = client;
 		}
 
 		private void Button_Click( object sender, RoutedEventArgs e )
@@ -38,9 +39,6 @@ namespace TukuiAddOnManagerEnhanced.DEV
 			client.BeginLogin( UserName.Text, Password.Text, TukuiActionCallback_Handler );
 		}
 
-		private void TukuiActionCallback_Handler( object sender, TukuiActionCallbackEventArgs e )
-		{
-
-		}
+		private void TukuiActionCallback_Handler( object sender, TukuiActionCallbackEventArgs e ) { }
 	}
 }

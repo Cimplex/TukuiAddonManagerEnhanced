@@ -148,6 +148,9 @@
     <Resource Include="Assests\Artwork\LoginRibbonOverflow%28Left%29.png" />
     <Resource Include="Assests\Artwork\LoginRibbonOverflow%28Right%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\SearchIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

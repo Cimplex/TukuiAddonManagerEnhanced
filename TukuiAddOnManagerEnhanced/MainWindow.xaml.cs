@@ -75,38 +75,22 @@ namespace TukuiAddOnManagerEnhanced
 			this.StateChanged += MainWindow_StateChanged;
 			this.LocationChanged += MainWindow_LocationChanged;
 			this.SizeChanged += MainWindow_SizeChanged;
+			this.Activated += MainWindow_ActivatedChange;
+			this.Deactivated += MainWindow_ActivatedChange;
+
+
 			// Register UI Controls Events
 
 			// Init Animations
 			InitAnimations( );
 		}
 
-		private void MainWindow_SizeChanged( object sender, SizeChangedEventArgs e )
+		private void MainWindow_ActivatedChange( object sender, EventArgs e )
 		{
-			WPFMonitor monitor = this.CurrentMonitor( );
-			MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
-			Rect workingArea = monitorInfo.WorkingArea;
-
-			if ( this.WindowState == WindowState.Normal )
-			{
-				//this.InvalidateMeasure( );
-				//Console.WriteLine( "SizeChange:    Left: " + this.Left + "   Width: " + this.Width + "    Expected: " + workingArea.Width );
-				if ( this.ActualWidth == workingArea.Width / 2 )
-				{
-					if ( this.Left == workingArea.Width / 2 )
-					{
-						RootLayout.Margin = new Thickness( 8, 0, 0, 0 );
-					}
-					else
-					{
-						RootLayout.Margin = new Thickness( 0, 0, 8, 0 );
-					}
-				}
-				else
-				{
-					RootLayout.Margin = new Thickness( 8 );
-				}
-			}
+			if ( this.IsActive )
+				VisualLayout.Background = new SolidColorBrush( Color.FromArgb( 0xFF, 0x2E, 0x2E, 0x2E ) );
+			else
+				VisualLayout.Background = new SolidColorBrush( Color.FromArgb( 0xFF, 0x4B, 0x4B, 0x4B ) );
 		}
 
 		#endregion Constructors (Inits)
@@ -124,34 +108,87 @@ namespace TukuiAddOnManagerEnhanced
 				WPFMonitor monitor = this.CurrentMonitor( );
 				MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
 				this.ForceWindowMove( monitorInfo.WorkingArea );
+
+				MyChrome.ResizeBorderThickness = new Thickness( 0 );
 			}
 			else
 			{
 				RootLayout.Margin = new Thickness( );
+				MyChrome.ResizeBorderThickness = new Thickness( 12 );
 			}
 		}
 
 		private void MainWindow_LocationChanged( object sender, EventArgs e )
 		{
+			// So this logic mess is basically to hide the shadow when you use aerosnap... would love to know of a better way if you got one...
 			WPFMonitor monitor = this.CurrentMonitor( );
 			MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
 			Rect workingArea = monitorInfo.WorkingArea;
 
 			if ( this.WindowState == WindowState.Normal )
 			{
-				//this.InvalidateMeasure( );
-				//Console.WriteLine( "LocationChange:   Left: " + this.Left + "   Width: " + this.Width + "    Expected: " + workingArea.Width );
 				if ( this.Left == workingArea.Width / 2 )
 				{
 					RootLayout.Margin = new Thickness( 8, 0, 0, 0 );
+					MyChrome.ResizeBorderThickness = new Thickness( 12, 0, 0, 0 );
 				}
 				else if( this.Left == 0 )
 				{
 					RootLayout.Margin = new Thickness( 0, 0, 8, 0 );
+					MyChrome.ResizeBorderThickness = new Thickness( 0, 0, 12, 0 );
 				}
 				else
 				{
 					RootLayout.Margin = new Thickness( 8, RootLayout.Margin.Top, 8, RootLayout.Margin.Bottom );
+					MyChrome.ResizeBorderThickness = new Thickness( 12, MyChrome.ResizeBorderThickness.Top, 12, MyChrome.ResizeBorderThickness.Bottom );
+				}
+			}
+		}
+
+		private void MainWindow_SizeChanged( object sender, SizeChangedEventArgs e )
+		{
+			// So this logic mess is basically to hide the shadow when you use aerosnap... would love to know of a better way if you got one...
+			WPFMonitor monitor = this.CurrentMonitor( );
+			MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
+			Rect workingArea = monitorInfo.WorkingArea;
+
+			if ( this.WindowState == WindowState.Normal )
+			{
+				if ( this.ActualWidth == workingArea.Width / 2 )
+				{
+					if ( this.ActualHeight != workingArea.Height )
+					{
+						if ( this.Left == workingArea.Width / 2 )
+						{
+							RootLayout.Margin = new Thickness( 8, 8, 8, 0 );
+							MyChrome.ResizeBorderThickness = new Thickness( 12, 12, 12, 0 );
+						}
+						else if ( this.Left == 0 )
+						{
+							RootLayout.Margin = new Thickness( 0, 8, 8, 8 );
+							MyChrome.ResizeBorderThickness = new Thickness( 0, 12, 12, 12 );
+						}
+						else
+						{
+							RootLayout.Margin = new Thickness( 8 );
+							MyChrome.ResizeBorderThickness = new Thickness( 12 );
+						}
+					}
+					else if ( this.Left == workingArea.Width / 2 )
+					{
+						RootLayout.Margin = new Thickness( 8, 0, 0, 0 );
+						MyChrome.ResizeBorderThickness = new Thickness( 12, 0, 0, 0 );
+					}
+					else
+					{
+						RootLayout.Margin = new Thickness( 0, 0, 8, 0 );
+						MyChrome.ResizeBorderThickness = new Thickness( 0, 0, 12, 0 );
+					}
+				}
+				else
+				{
+					RootLayout.Margin = new Thickness( 8 );
+					MyChrome.ResizeBorderThickness = new Thickness( 12 );
 				}
 			}
 		}
