@@ -53,6 +53,7 @@ namespace TukuiAddOnManagerEnhanced
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private WindowChrome MyChrome;
 		private TukuiClient MyClient;
 
 		#region Constructors (Inits)
@@ -65,18 +66,47 @@ namespace TukuiAddOnManagerEnhanced
 			DataContext = this;
 
 			// Get ready for a borderless Window
-			WindowChrome chrome = new WindowChrome( );
-			chrome.ResizeBorderThickness = new Thickness( 6 );
-			WindowChrome.SetWindowChrome( this, chrome );
+			MyChrome = new WindowChrome( );
+			MyChrome.ResizeBorderThickness = new Thickness( 12 );
+			WindowChrome.SetWindowChrome( this, MyChrome );
 
 			// Register Window Events
 			this.Loaded += MainWindow_Loaded;
 			this.StateChanged += MainWindow_StateChanged;
-
+			this.LocationChanged += MainWindow_LocationChanged;
+			this.SizeChanged += MainWindow_SizeChanged;
 			// Register UI Controls Events
 
 			// Init Animations
 			InitAnimations( );
+		}
+
+		private void MainWindow_SizeChanged( object sender, SizeChangedEventArgs e )
+		{
+			WPFMonitor monitor = this.CurrentMonitor( );
+			MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
+			Rect workingArea = monitorInfo.WorkingArea;
+
+			if ( this.WindowState == WindowState.Normal )
+			{
+				//this.InvalidateMeasure( );
+				//Console.WriteLine( "SizeChange:    Left: " + this.Left + "   Width: " + this.Width + "    Expected: " + workingArea.Width );
+				if ( this.ActualWidth == workingArea.Width / 2 )
+				{
+					if ( this.Left == workingArea.Width / 2 )
+					{
+						RootLayout.Margin = new Thickness( 8, 0, 0, 0 );
+					}
+					else
+					{
+						RootLayout.Margin = new Thickness( 0, 0, 8, 0 );
+					}
+				}
+				else
+				{
+					RootLayout.Margin = new Thickness( 8 );
+				}
+			}
 		}
 
 		#endregion Constructors (Inits)
@@ -88,10 +118,41 @@ namespace TukuiAddOnManagerEnhanced
 			// Windowless borders do not have this code to force the window in the working area
 			if ( this.WindowState == WindowState.Maximized )
 			{
+				RootLayout.Margin = new Thickness( 0 );
+
 				// Check the Working Size and make sure the window does not get too big
 				WPFMonitor monitor = this.CurrentMonitor( );
 				MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
 				this.ForceWindowMove( monitorInfo.WorkingArea );
+			}
+			else
+			{
+				RootLayout.Margin = new Thickness( );
+			}
+		}
+
+		private void MainWindow_LocationChanged( object sender, EventArgs e )
+		{
+			WPFMonitor monitor = this.CurrentMonitor( );
+			MonitorInfo monitorInfo = monitor.GetMonitorInfo( );
+			Rect workingArea = monitorInfo.WorkingArea;
+
+			if ( this.WindowState == WindowState.Normal )
+			{
+				//this.InvalidateMeasure( );
+				//Console.WriteLine( "LocationChange:   Left: " + this.Left + "   Width: " + this.Width + "    Expected: " + workingArea.Width );
+				if ( this.Left == workingArea.Width / 2 )
+				{
+					RootLayout.Margin = new Thickness( 8, 0, 0, 0 );
+				}
+				else if( this.Left == 0 )
+				{
+					RootLayout.Margin = new Thickness( 0, 0, 8, 0 );
+				}
+				else
+				{
+					RootLayout.Margin = new Thickness( 8, RootLayout.Margin.Top, 8, RootLayout.Margin.Bottom );
+				}
 			}
 		}
 
@@ -136,7 +197,6 @@ namespace TukuiAddOnManagerEnhanced
 
 		#endregion Windows State Buttons (Title Bar)
 
-
 		#region Sub Menu Buttons - Logic
 		private void SubMenuTextButton_MouseDown( object sender, MouseButtonEventArgs e )
 		{
@@ -163,6 +223,7 @@ namespace TukuiAddOnManagerEnhanced
 							break;
 
 						case "SubMenuTextButton_Refresh":
+							Clicked_Refresh( );
 							break;
 
 						case "SubMenuTextButton_Settings":
@@ -190,6 +251,22 @@ namespace TukuiAddOnManagerEnhanced
 			loginWindowVisible = !loginWindowVisible;
 		}
 
+		bool updateVisible = false;
+		private void Clicked_Refresh( )
+		{
+			if ( updateVisible )
+			{
+				this.Title = "Tukui: 5 updates.";
+				Animate_UpdateText_Show( );
+			}
+			else
+			{
+				this.Title = "Tukui";
+				Animate_UpdateText_Hide( );
+			}
+			updateVisible = !updateVisible;
+		}
+
 		#endregion Sub Menu Buttons - Logic
 
 		#region Animations
@@ -197,6 +274,7 @@ namespace TukuiAddOnManagerEnhanced
 		public void InitAnimations( )
 		{
 			LoginRibbonAnimate.RenderTransform = new TranslateTransform( );
+			UpdateText.RenderTransform = new TranslateTransform( );
 		}
 
 		public void Animate_LoginRibbon_Show( )
@@ -205,8 +283,8 @@ namespace TukuiAddOnManagerEnhanced
 
 			DoubleAnimation daMove = new DoubleAnimation( )
 			{
-				From = -30,
-				To = 0,
+				From = -60,
+				To = -50,
 				Duration = TimeSpan.FromMilliseconds( 300 ),
 				DecelerationRatio = 1,
 			};
@@ -215,8 +293,8 @@ namespace TukuiAddOnManagerEnhanced
 			{
 				From = 0,
 				To = 1,
-				Duration = TimeSpan.FromMilliseconds( 200 ),
-				BeginTime = TimeSpan.FromMilliseconds( 100 ),
+				Duration = TimeSpan.FromMilliseconds( 100 ),
+				BeginTime = TimeSpan.FromMilliseconds( 10 ),
 			};
 
 			// Reset the Opacity to 0
@@ -236,8 +314,8 @@ namespace TukuiAddOnManagerEnhanced
 
 			DoubleAnimation daMove = new DoubleAnimation( )
 			{
-				From = 0,
-				To = -30,
+				From = -50,
+				To = -60,
 				Duration = TimeSpan.FromMilliseconds( 300 ),
 				AccelerationRatio = 1,
 			};
@@ -246,12 +324,10 @@ namespace TukuiAddOnManagerEnhanced
 			{
 				From = 1,
 				To = 0,
-				Duration = TimeSpan.FromMilliseconds( 200 ),
+				Duration = TimeSpan.FromMilliseconds( 100 ),
+				BeginTime = TimeSpan.FromMilliseconds( 200 ),
+				AccelerationRatio = 1,
 			};
-
-			// Reset the Opacity to 0
-			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, null );
-			LoginRibbonAnimate.Opacity = 0;
 
 			// When the animation is complete, hide the login ribbon's container
 			daFade.Completed += ( object _sender, EventArgs _e ) => LoginRibbon.Visibility = Visibility.Collapsed;
@@ -262,6 +338,73 @@ namespace TukuiAddOnManagerEnhanced
 			
 		}
 
+		public void Animate_UpdateText_Show( )
+		{
+			TranslateTransform currentTransform = UpdateText.RenderTransform as TranslateTransform;
+
+			currentTransform.BeginAnimation( TranslateTransform.XProperty, null );
+			currentTransform.X = 0;
+
+			DoubleAnimation daMove = new DoubleAnimation( )
+			{
+				From = 8,
+				To = 0,
+				Duration = TimeSpan.FromMilliseconds( 300 ),
+				DecelerationRatio = 1,
+			};
+
+			DoubleAnimation daFade = new DoubleAnimation( )
+			{
+				From = 0,
+				To = 1,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				BeginTime = TimeSpan.FromMilliseconds( 100 ),
+			};
+
+			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
+			UpdateText.BeginAnimation( Grid.OpacityProperty, daFade );
+
+			// Force Show the Container for the Ribbon
+			UpdateText.Visibility = Visibility.Visible;
+		}
+
+		public void Animate_UpdateText_Hide( )
+		{
+			TranslateTransform currentTransform = UpdateText.RenderTransform as TranslateTransform;
+
+			currentTransform.BeginAnimation( TranslateTransform.YProperty, null );
+			currentTransform.Y = 0;
+
+			DoubleAnimation daMove = new DoubleAnimation( )
+			{
+				From = 0,
+				To = -200,
+				Duration = TimeSpan.FromMilliseconds( 300 ),
+				AccelerationRatio = 1,
+			};
+
+			DoubleAnimation daFade = new DoubleAnimation( )
+			{
+				From = 1,
+				To = 0,
+				BeginTime = TimeSpan.FromMilliseconds( 100 ),
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+			};
+
+
+			// When the animation is complete, hide the login ribbon's container
+			daFade.Completed += ( object _sender, EventArgs _e ) => UpdateText.Visibility = Visibility.Collapsed;
+
+			currentTransform.BeginAnimation( TranslateTransform.XProperty, daMove );
+			UpdateText.BeginAnimation( Grid.OpacityProperty, daFade );
+		}
+
+
 		#endregion Animations
+
+		private void buttonCancelLogin_Click( object sender, RoutedEventArgs e )
+		{
+			Clicked_Logout( );
+		}
 	}
 }

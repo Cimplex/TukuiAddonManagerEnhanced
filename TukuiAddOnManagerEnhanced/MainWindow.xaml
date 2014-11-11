@@ -10,10 +10,10 @@
         
         
         MinHeight="300"
-        MinWidth="550"
+        MinWidth="636"
         
         AllowsTransparency="True"
-        Background="#FF2E2E2E">
+        Background="Transparent">
     <Window.Resources>
         <Convert:WindowsState_NormalMaximize_ToVisibility x:Key="WindowsStateConverter" />
         <Convert:WindowsState_NormalMaximize_ToVisibilityInverse x:Key="InverseWindowsStateConverter" />
@@ -26,7 +26,7 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment"   Value="Center" />
         </Style>
-        
+
         <Style x:Key="Style_WindowStateGridButtons" TargetType="{x:Type Grid}">
             <Setter Property="Width"  Value="22" />
             <Setter Property="Height" Value="22" />
@@ -92,112 +92,151 @@
 
 
     </Window.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="28" />
-            <RowDefinition Height="45" />
-            <RowDefinition Height="21" />
-            <RowDefinition />
-            <RowDefinition Height="8" />
-        </Grid.RowDefinitions>
-        
-        <!-- Title Bar -->
-        <Grid>
-            <StackPanel Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Orientation="Horizontal" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" >
 
-                <Grid x:Name="WindowState_Minimize" Style="{DynamicResource Style_WindowStateGridButtons}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
-                    <TextBlock Style="{StaticResource Style_WindowsStateText}" Text="0" />
-                </Grid>
-                <Grid x:Name="WindowState_Maximize" Style="{DynamicResource Style_WindowStateGridButtons}" Visibility="{Binding WindowState, Converter={StaticResource WindowsStateConverter}}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
-                    <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Width="22" Height="22" Source="Assests/WindowControls/Max.png" />
-                </Grid>
-                <Grid x:Name="WindowState_Normalize" Style="{DynamicResource Style_WindowStateGridButtons}" Visibility="{Binding WindowState, Converter={StaticResource InverseWindowsStateConverter}}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
-                    <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Width="22" Height="22" Source="Assests/WindowControls/Restore.png" />
-                </Grid>
-                <Grid x:Name="WindowState_Close" Style="{DynamicResource Style_WindowStateGridButtons_Close}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
-                    <TextBlock Margin="0.5,0,0,0"  Style="{StaticResource Style_WindowsStateText}" Text="r" />
-                </Grid>
-            </StackPanel>
-        </Grid>
-        
-        <!-- Menu Ribbon -->
-        <Grid Grid.Row="1" Margin="8,0,8,0" SnapsToDevicePixels="True">
-            <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperLeftMenuBar-Logo(uHD).png" Margin="0,-21,0,0" Width="240" HorizontalAlignment="Left" />
-            <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperRightMenuBar(uHD).png" Margin="0,0,0,-21" Width="36" HorizontalAlignment="Right" />
-            <Rectangle Margin="239,0,35,0" Fill="#FFCBCBCB" />
-        </Grid>
+    <Grid x:Name="RootLayout" Margin="8" >
+        <Rectangle Fill="Black">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid Background="#FF2E2E2E">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28" />
+                <RowDefinition Height="45" />
+                <RowDefinition Height="21" />
+                <RowDefinition />
+                <RowDefinition Height="8" />
+            </Grid.RowDefinitions>
 
-        <!-- Sub-Menu Ribbon -->
-        <Grid Grid.Row="2" Margin="8,0,55,0" SnapsToDevicePixels="True" >
-            <StackPanel x:Name="SubMenuItems" HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock x:Name="SubMenuTextButton_UpdateAll" Text="UPDATE ALL" Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
-                <TextBlock x:Name="SubMenuTextButton_Refresh"   Text="REFRESH"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
-                <TextBlock x:Name="SubMenuTextButton_Settings"  Text="SETTINGS"   Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
-                <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
-            </StackPanel>
-        </Grid>
-
-        <!-- Body -->
-        <Grid Grid.Row="3" SnapsToDevicePixels="True" >
-            <Grid Height="24" VerticalAlignment="Top" Margin="8,12,8,0">
-                <StackPanel x:Name="SubSubMenuBar" HorizontalAlignment="Right" Orientation="Horizontal">
-
-                    <Grid x:Name="TemporarilyHideAds" Margin="0,0,-5,0">
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Left(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
-                        <Rectangle Fill="#FF68B6ED" Margin="16,0" />
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Right(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
-                        <TextBlock Margin="18,0,14,0" Padding="0,1,0,0" Text="TEMPORARILY HIDE ADS" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+            <!-- Title Bar -->
+            <Grid>
+                <StackPanel Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Orientation="Horizontal" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" >
+                    <TextBlock x:Name="UpdateText" Visibility="Visible" Text="5 Updates Available" VerticalAlignment="Bottom" Padding="0,0,10,2" FontFamily="Segoe UI Semibold" Foreground="White" />
+                    <Grid x:Name="WindowState_Minimize" Style="{DynamicResource Style_WindowStateGridButtons}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
+                        <TextBlock Style="{StaticResource Style_WindowsStateText}" Text="0" />
                     </Grid>
-                    
-                    <Grid x:Name="GetPremiumMembership" Margin="0,0,-5,0">
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Left(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
-                        <Rectangle Fill="#FFC5B358" Margin="16,0" />
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Right(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
-                        <TextBlock Margin="18,0,14,0" Padding="0,1,0,0" Text="GET PREMIUM" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+                    <Grid x:Name="WindowState_Maximize" Style="{DynamicResource Style_WindowStateGridButtons}" Visibility="{Binding WindowState, Converter={StaticResource WindowsStateConverter}}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
+                        <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Width="22" Height="22" Source="Assests/WindowControls/Max.png" />
                     </Grid>
-                    
-                    <Grid x:Name="DonateButton" Margin="0,0,-5,0">
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Left(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
-                        <Rectangle Fill="#FFFF5555" Margin="16,0" />
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Right(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
-                        <TextBlock Margin="18,0,14,0" Padding="0,1,0,0" Text="DONATE" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+                    <Grid x:Name="WindowState_Normalize" Style="{DynamicResource Style_WindowStateGridButtons}" Visibility="{Binding WindowState, Converter={StaticResource InverseWindowsStateConverter}}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
+                        <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Width="22" Height="22" Source="Assests/WindowControls/Restore.png" />
                     </Grid>
-
-                    <Grid x:Name="SearchBarGrid" Background="Transparent">
-                        <Image Source="Assests/Artwork/SubSubMenuButton-Left.png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
-                        <Rectangle Fill="#FFCBCBCB" Margin="16,0,0,0" Width="200" />
-                        <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperRightMenuBar(uHD).png" Margin="0,0,0,-11" Height="35" HorizontalAlignment="Right" />
-                        <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="16,2,0,0" Width="200" Text="Testggg" FontSize="14" FontFamily="Segoe UI Semibold" />
+                    <Grid x:Name="WindowState_Close" Style="{DynamicResource Style_WindowStateGridButtons_Close}" MouseLeftButtonDown="text_WindowState_MouseLeftButtonDown" MouseLeftButtonUp="text_WindowState_MouseLeftButtonUp">
+                        <TextBlock Margin="0.5,0,0,0"  Style="{StaticResource Style_WindowsStateText}" Text="r" />
                     </Grid>
                 </StackPanel>
             </Grid>
 
+            <!-- Menu Ribbon -->
+            <Grid Grid.Row="1" Margin="8,0,8,0" SnapsToDevicePixels="True">
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperLeftMenuBar-Logo(uHD).png" Margin="0,-21,0,0" Width="240" HorizontalAlignment="Left" />
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperRightMenuBar(uHD).png" Margin="0,0,0,-21" Width="36" HorizontalAlignment="Right" />
+                <Rectangle Margin="239,0,35,0" Fill="#FFCBCBCB" />
+            </Grid>
 
-            <!-- Login Ribbon -->
-            <Grid Visibility="Collapsed" x:Name="LoginRibbon" Margin="8,4,8,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ClipToBounds="True" >
-                <Grid x:Name="LoginRibbonAnimate">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="148" />
-                        <ColumnDefinition Width="80" />
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Column="0" Height="90" Fill="#FF4D4D4D" VerticalAlignment="Top" />
-                    <Rectangle Grid.Column="2" Width="80" Height="90" Fill="#FF4D4D4D" VerticalAlignment="Top" />
-                    <Image Grid.Column="1" x:Name="LoginRibbonImage" VerticalAlignment="Top" Width="220" Margin="-36,0,-36,-65" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                    <Grid Grid.Column="1" Margin="-36,21,-36,0" VerticalAlignment="Top" Height="134" >
-                        <TextBlock Text="USERNAME / PASSWORD" Margin="0,8,0,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                        <TextBox Height="28" Width="198" Margin="0,36,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                        <TextBox Height="28" Width="198" Margin="0,68,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                        <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
+            <!-- Sub-Menu Ribbon -->
+            <Grid Grid.Row="2" Margin="8,0,55,0" SnapsToDevicePixels="True" >
+                <StackPanel x:Name="SubMenuItems" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock x:Name="SubMenuTextButton_UpdateAll" Text="UPDATE ALL" Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                    <TextBlock x:Name="SubMenuTextButton_Refresh"   Text="REFRESH"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                    <TextBlock x:Name="SubMenuTextButton_Settings"  Text="SETTINGS"   Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                    <TextBlock x:Name="SubMenuTextButton_Logout"    Text="SIGN IN"    Style="{StaticResource Style_SubMenuTextButton}" MouseDown="SubMenuTextButton_MouseDown" MouseUp="SubMenuTextButton_MouseUp" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Body -->
+            <Grid Grid.Row="3" SnapsToDevicePixels="True" >
+                <Grid Height="24" VerticalAlignment="Top" Margin="8,12,8,0">
+                    <StackPanel x:Name="SubSubMenuBar" HorizontalAlignment="Right" Orientation="Horizontal">
+
+                        <Grid x:Name="TemporarilyHideAds" Margin="0,0,-5,0">
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
+                            </Grid.Effect>
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Left(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
+                            <Rectangle Fill="#FF68B6ED" Margin="16,0" />
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Right(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
+                            <TextBlock TextOptions.TextFormattingMode="Display" Margin="18,0,14,0" Padding="0,1,0,0" Text="TEMPORARILY HIDE ADS" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+                        </Grid>
+
+                        <Grid x:Name="GetPremiumMembership" Margin="0,0,-5,0">
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
+                            </Grid.Effect>
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Left(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
+                            <Rectangle Fill="#FFC5B358" Margin="16,0" />
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Right(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
+                            <TextBlock TextOptions.TextFormattingMode="Display" Margin="18,0,14,0" Padding="0,1,0,0" Text="GET PREMIUM" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+                        </Grid>
+
+                        <Grid x:Name="DonateButton" Margin="0,0,-5,0">
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
+                            </Grid.Effect>
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Left(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
+                            <Rectangle Fill="#FFFF5555" Margin="16,0" />
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Right(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
+                            <TextBlock TextOptions.TextFormattingMode="Display" Margin="18,0,14,0" Padding="0,1,0,0" Text="DONATE" Foreground="White" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" />
+                        </Grid>
+
+                        <Grid x:Name="SearchBarGrid" Background="Transparent">
+                            <Image Source="Assests/Artwork/SubSubMenuButton-Left.png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
+                            <Rectangle Fill="#FFCBCBCB" Margin="16,0,0,0" Width="200" />
+                            <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Assests/Artwork/UpperRightMenuBar(uHD).png" Margin="0,0,0,-11" Height="35" HorizontalAlignment="Right" />
+                            <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="16,2,0,0" Width="200" Text="Testggg" FontSize="14" FontFamily="Segoe UI Semibold" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+
+                <!-- Login Ribbon -->
+                <Grid Visibility="Collapsed" x:Name="LoginRibbon" Margin="-8,0,-8,0"   VerticalAlignment="Top" HorizontalAlignment="Stretch" ClipToBounds="False" >
+                    <Grid x:Name="LoginRibbonAnimate">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="148" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+
+                        <Rectangle Grid.Column="2" Height="90" Margin="0,6,8,0" Fill="#FF4D4D4D" VerticalAlignment="Top">
+                            <Rectangle.Effect>
+                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        <Rectangle Grid.Column="0" Height="90" Margin="8,6,0,0" Fill="#FF4D4D4D" VerticalAlignment="Top">
+                            <Rectangle.Effect>
+                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        
+
+                        <Image Grid.Column="0" Source="Assests/Artwork/LoginRibbonOverflow(Left).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                        <Image Grid.Column="2" Source="Assests/Artwork/LoginRibbonOverflow(Right).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+                        <Image Grid.Column="1" x:Name="LoginRibbonImage" VerticalAlignment="Top" Width="220" Margin="-36,6,-36,8" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                            </Image.Effect>
+                        </Image>
+                        <Grid Grid.Column="1" Margin="-36,21,-36,0" VerticalAlignment="Top" Height="134" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="165*"/>
+                                <ColumnDefinition Width="56*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="USERNAME / PASSWORD" Margin="29,14,29,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                            <TextBox Height="28" Width="198" Margin="11,36,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                            <TextBox Height="28" Width="198" Margin="11,68,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                            <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.ColumnSpan="2" />
+                            <Button x:Name="buttonCancelLogin" Content="CANCEL" Height="24" Width="76" Margin="11,101,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="buttonCancelLogin_Click" />
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-            
-        </Grid>
-        
 
-        <!-- Bottom Line -->
-        <Rectangle Grid.Row="4" Fill="#FF68B6ED" />
+            </Grid>
+
+
+            <!-- Bottom Line -->
+            <Rectangle Grid.Row="4" Fill="#FF68B6ED" />
+
+        </Grid>
     </Grid>
 </Window>
