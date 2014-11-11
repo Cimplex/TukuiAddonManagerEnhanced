@@ -5,92 +5,102 @@
         xmlns:Convert="clr-namespace:TukuiAddOnManagerEnhanced.Converters"
         
         Title="MainWindow"
-        Height="350" Width="640"
+        Height="600" Width="800"
         WindowStyle="None"
         
         
-        MinHeight="300"
+        MinHeight="400"
         MinWidth="636"
         
         AllowsTransparency="True"
         Background="Transparent">
+    
     <Window.Resources>
-        <Convert:WindowsState_NormalMaximize_ToVisibility x:Key="WindowsStateConverter" />
-        <Convert:WindowsState_NormalMaximize_ToVisibilityInverse x:Key="InverseWindowsStateConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/TukuiAddOnManagerEnhanced;component/Styles/DataGrid.xaml" />
+                
+                <ResourceDictionary>
 
-        <Style x:Key="Style_WindowsStateText" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontFamily"  Value="Webdings" />
-            <Setter Property="FontSize"    Value="12" />
-            <Setter Property="Foreground"  Value="White" />
-            <Setter Property="Background"  Value="Transparent" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment"   Value="Center" />
-        </Style>
+                    <Convert:WindowsState_NormalMaximize_ToVisibility x:Key="WindowsStateConverter" />
+                    <Convert:WindowsState_NormalMaximize_ToVisibilityInverse x:Key="InverseWindowsStateConverter" />
 
-        <Style x:Key="Style_WindowStateGridButtons" TargetType="{x:Type Grid}">
-            <Setter Property="Width"  Value="22" />
-            <Setter Property="Height" Value="22" />
-            <Setter Property="Margin" Value="2, 0, 0, 0" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="SteelBlue" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="Transparent" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+                    <Style x:Key="Style_WindowsStateText" TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontFamily"  Value="Webdings" />
+                        <Setter Property="FontSize"    Value="12" />
+                        <Setter Property="Foreground"  Value="White" />
+                        <Setter Property="Background"  Value="Transparent" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment"   Value="Center" />
+                    </Style>
 
-        <Style x:Key="Style_WindowStateGridButtons_Close" TargetType="{x:Type Grid}">
-            <Setter Property="Width"  Value="45" />
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="4, 1, 0, 2" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFEA3131" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="#FFCB3D3D" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+                    <Style x:Key="Style_WindowStateGridButtons" TargetType="{x:Type Grid}">
+                        <Setter Property="Width"  Value="22" />
+                        <Setter Property="Height" Value="22" />
+                        <Setter Property="Margin" Value="2, 0, 0, 0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="SteelBlue" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
 
-        <Style x:Key="Style_SubMenuTextButton" TargetType="{x:Type TextBlock}">
-            <Setter Property="Padding"    Value="13,0,13,0" />
-            <Setter Property="Margin"     Value="0,2,0,0" />
-            <Setter Property="FontFamily" Value="Segoe UI SemiBold" />
-            <Setter Property="FontSize"   Value="12" />
-            <Setter Property="Cursor"     Value="Hand" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF68B6ED" />
-                    <Setter Property="Foreground" Value="#FF2E2E2E" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Foreground" Value="#FFCBCBCB" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+                    <Style x:Key="Style_WindowStateGridButtons_Close" TargetType="{x:Type Grid}">
+                        <Setter Property="Width"  Value="45" />
+                        <Setter Property="Height" Value="20" />
+                        <Setter Property="Margin" Value="4, 1, 0, 2" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFEA3131" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Background" Value="#FFCB3D3D" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
 
-        <Style TargetType="{x:Type TextBox}" x:Key="TransparentTextBoxStyle">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Grid>
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                Background="Transparent"
-                                Focusable="True"
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                    <Style x:Key="Style_SubMenuTextButton" TargetType="{x:Type TextBlock}">
+                        <Setter Property="Padding"    Value="13,0,13,0" />
+                        <Setter Property="Margin"     Value="0,2,0,0" />
+                        <Setter Property="FontFamily" Value="Segoe UI SemiBold" />
+                        <Setter Property="FontSize"   Value="12" />
+                        <Setter Property="Cursor"     Value="Hand" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF68B6ED" />
+                                <Setter Property="Foreground" Value="#FF2E2E2E" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="#FFCBCBCB" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
 
+                    <Style TargetType="{x:Type TextBox}" x:Key="TransparentTextBoxStyle">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                    <Grid>
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                    Background="Transparent"
+                                    Focusable="True"
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollBarVisibility="Hidden" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
 
+                </ResourceDictionary>
+            
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Grid x:Name="RootLayout" Margin="8" >
@@ -105,6 +115,7 @@
                 <RowDefinition Height="45" />
                 <RowDefinition Height="21" />
                 <RowDefinition />
+                <RowDefinition Height="100" />
                 <RowDefinition Height="8" />
             </Grid.RowDefinitions>
 
@@ -147,25 +158,41 @@
             <!-- Body -->
             <Grid Grid.Row="3" SnapsToDevicePixels="True" >
 
-                <DataGrid Margin="8,56,8,8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Action" Width="80" />
-                        <DataGridTextColumn Binding="{Binding Name}" Header="AddOn Name" Width="210" />
-                        <DataGridTextColumn Binding="{Binding Name}" Header="DL's" Width="56" />
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Rating" Width="96" />
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Description" Width="430" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
+                <ScrollViewer Margin="8,56,8,12" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <DataGrid Style="{StaticResource AzureDataGrid}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Action" Width="80" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="AddOn Name" Width="210" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="DL's" Width="56" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Rating" Width="96" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Description" Width="430" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+                <ProgressBar Height="4" VerticalAlignment="Bottom" Margin="8" IsIndeterminate="True" BorderBrush="Transparent" Background="Transparent" />
+                
                 <!-- Search and Sub-Sub-Menu -->
                 <Grid Height="24" VerticalAlignment="Top" Margin="8,12,8,0">
                     <Image HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Source="Assests/Artwork/SearchIcon.png" Opacity=".8"  />
                     <StackPanel x:Name="SubSubMenuBar" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,22,0">
 
                         <Grid x:Name="TemporarilyHideAds" Margin="0,0,-5,0">
-                            <Grid.Effect>
-                                <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
-                            </Grid.Effect>
+                            
+                            <Grid >
+                                <Grid.OpacityMask>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                        <GradientStop Color="White" Offset="0"/>
+                                        <GradientStop Offset="0.767"/>
+                                        <GradientStop Color="#50FFFFFF" Offset="0.427"/>
+                                        <GradientStop Color="#96FFFFFF" Offset="0.203"/>
+                                    </LinearGradientBrush>
+                                </Grid.OpacityMask>
+                                <Grid.Effect>
+                                    <DropShadowEffect Opacity="1" Direction="245" ShadowDepth="4" BlurRadius="8" RenderingBias="Performance" />
+                                </Grid.Effect>
+                                <Image Source="Assests/Artwork/SubSubMenuButton-Left(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
+                                <Rectangle Fill="#FF68B6ED" Margin="16,0" />
+                            </Grid>
                             <Image Source="Assests/Artwork/SubSubMenuButton-Left(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
                             <Rectangle Fill="#FF68B6ED" Margin="16,0" />
                             <Image Source="Assests/Artwork/SubSubMenuButton-Right(Clicked).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
@@ -173,9 +200,9 @@
                         </Grid>
 
                         <Grid x:Name="GetPremiumMembership" Margin="0,0,-5,0">
-                            <Grid.Effect>
+                            <!--<Grid.Effect>
                                 <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
-                            </Grid.Effect>
+                            </Grid.Effect>-->
                             <Image Source="Assests/Artwork/SubSubMenuButton-Left(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
                             <Rectangle Fill="#FFC5B358" Margin="16,0" />
                             <Image Source="Assests/Artwork/SubSubMenuButton-Right(Premium).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
@@ -183,9 +210,9 @@
                         </Grid>
 
                         <Grid x:Name="DonateButton" Margin="0,0,-5,0">
-                            <Grid.Effect>
+                            <!--<Grid.Effect>
                                 <DropShadowEffect Opacity="0.6" Direction="245" ShadowDepth="2" BlurRadius="6" RenderingBias="Performance" />
-                            </Grid.Effect>
+                            </Grid.Effect>-->
                             <Image Source="Assests/Artwork/SubSubMenuButton-Left(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" />
                             <Rectangle Fill="#FFFF5555" Margin="16,0" />
                             <Image Source="Assests/Artwork/SubSubMenuButton-Right(Donate).png" Width="17" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Right" />
@@ -201,53 +228,61 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Login Ribbon -->
-                <Grid Visibility="Collapsed" x:Name="LoginRibbon" Margin="-8,0,-8,0"   VerticalAlignment="Top" HorizontalAlignment="Stretch" ClipToBounds="False" >
-                    <Grid x:Name="LoginRibbonAnimate">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="148" />
-                            <ColumnDefinition Width="80" />
-                        </Grid.ColumnDefinitions>
-
-                        <Rectangle Grid.Column="2" Height="90" Margin="0,6,8,0" Fill="#FF4D4D4D" VerticalAlignment="Top">
-                            <Rectangle.Effect>
-                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
-                            </Rectangle.Effect>
-                        </Rectangle>
-                        <Rectangle Grid.Column="0" Height="90" Margin="8,6,0,0" Fill="#FF4D4D4D" VerticalAlignment="Top">
-                            <Rectangle.Effect>
-                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
-                            </Rectangle.Effect>
-                        </Rectangle>
-                        
-
-                        <Image Grid.Column="0" Source="Assests/Artwork/LoginRibbonOverflow(Left).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
-                        <Image Grid.Column="2" Source="Assests/Artwork/LoginRibbonOverflow(Right).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Right"  />
-                        <Image Grid.Column="1" x:Name="LoginRibbonImage" VerticalAlignment="Top" Width="220" Margin="-36,6,-36,8" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor">
-                            <Image.Effect>
-                                <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
-                            </Image.Effect>
-                        </Image>
-                        <Grid Grid.Column="1" Margin="-36,21,-36,0" VerticalAlignment="Top" Height="134" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="165*"/>
-                                <ColumnDefinition Width="56*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="USERNAME / PASSWORD" Margin="29,14,29,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
-                            <TextBox  Height="28" Width="198" Margin="11,36,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Testgg" Grid.ColumnSpan="2" FontSize="14" FontFamily="Segoe UI Semibold" Padding="8,3,0,0" />
-                            <PasswordBox Height="28" Width="198" Margin="11,68,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Password="Testgg" Grid.ColumnSpan="2" FontSize="16" FontFamily="Segoe UI Semibold" Padding="8,1,0,0" />
-                            <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.ColumnSpan="2" />
-                            <Button x:Name="buttonCancelLogin" Content="CANCEL" Height="24" Width="76" Margin="11,101,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="buttonCancelLogin_Click" />
-                        </Grid>
-                    </Grid>
-                </Grid>
+                
 
             </Grid>
 
+            <!-- Ad Content -->
+            <Grid Grid.Row="4">
+                <Grid Height="92" Width="500" Background="White" Margin="0,0,0,8" />
+            </Grid>
+
+            <!-- Login Ribbon -->
+            <Grid Grid.Row="3" Grid.RowSpan="4" Visibility="Collapsed" x:Name="LoginRibbon" Margin="-8,0,-8,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ClipToBounds="False" >
+                <Grid x:Name="LoginRibbonAnimate">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="148" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" Source="Assests/Artwork/LoginRibbonOverflow(Left).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                    <Image Grid.Column="2" Source="Assests/Artwork/LoginRibbonOverflow(Right).png" Height="100" Margin="0,-4,0,0" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+
+                    <Rectangle Grid.Column="2" Height="90" Margin="0,6,0,0" Fill="#FF73B6EA" VerticalAlignment="Top">
+                        <Rectangle.Effect>
+                            <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                        </Rectangle.Effect>
+                    </Rectangle>
+                    <Rectangle Grid.Column="0" Height="90" Margin="0,6,0,0" Fill="#FF73B6EA" VerticalAlignment="Top">
+                        <Rectangle.Effect>
+                            <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                        </Rectangle.Effect>
+                    </Rectangle>
+
+                    <Image Source="Assests/Artwork/logo.png" Width="180" Stretch="Uniform" Height="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,4,0,0" RenderOptions.BitmapScalingMode="HighQuality" />
+
+                    <Image Grid.Column="1" x:Name="LoginRibbonImage" VerticalAlignment="Top" Width="220" Margin="-36,6,-36,8" Source="Assests/Artwork/LoginRibbon(uHD).png" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                        <Image.Effect>
+                            <DropShadowEffect BlurRadius="12" Color="Black" Opacity="0.8" ShadowDepth="0" RenderingBias="Performance" />
+                        </Image.Effect>
+                    </Image>
+                    <Grid Grid.Column="1" Margin="-36,21,-36,0" VerticalAlignment="Top" Height="134" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="165*"/>
+                            <ColumnDefinition Width="56*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="USERNAME / PASSWORD" Margin="29,14,29,0" Foreground="#FF2E2E2E" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                        <TextBox  Height="28" Width="198" Margin="11,36,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Testgg" Grid.ColumnSpan="2" FontSize="14" FontFamily="Segoe UI Semibold" Padding="8,3,0,0" />
+                        <PasswordBox Height="28" Width="198" Margin="11,68,11,0" VerticalAlignment="Top" HorizontalAlignment="Center" Password="Testgg" Grid.ColumnSpan="2" FontSize="16" FontFamily="Segoe UI Semibold" Padding="8,1,0,0" />
+                        <Button Content="LOGIN" Height="24" Width="76" Margin="0,101,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.ColumnSpan="2" />
+                        <Button x:Name="buttonCancelLogin" Content="CANCEL" Height="24" Width="76" Margin="11,101,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="buttonCancelLogin_Click" />
+                    </Grid>
+                </Grid>
+            </Grid>
 
             <!-- Bottom Line -->
-            <Rectangle Grid.Row="4" Fill="#FF68B6ED" />
+            <Rectangle Grid.Row="5" Fill="#FF68B6ED" />
 
         </Grid>
     </Grid>

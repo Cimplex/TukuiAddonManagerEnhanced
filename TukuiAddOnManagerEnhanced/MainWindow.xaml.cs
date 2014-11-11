@@ -87,10 +87,19 @@ namespace TukuiAddOnManagerEnhanced
 
 		private void MainWindow_ActivatedChange( object sender, EventArgs e )
 		{
+			ColorAnimation caAnimate = new ColorAnimation( )
+			{
+				Duration = TimeSpan.FromMilliseconds(60),
+			};
+
+			SolidColorBrush currentBrush = VisualLayout.Background as SolidColorBrush;
+
 			if ( this.IsActive )
-				VisualLayout.Background = new SolidColorBrush( Color.FromArgb( 0xFF, 0x2E, 0x2E, 0x2E ) );
+				caAnimate.To = Color.FromArgb( 0xFF, 0x2E, 0x2E, 0x2E );
 			else
-				VisualLayout.Background = new SolidColorBrush( Color.FromArgb( 0xFF, 0x4B, 0x4B, 0x4B ) );
+				caAnimate.To = Color.FromArgb( 0xFF, 0x4B, 0x4B, 0x4B );
+
+			currentBrush.BeginAnimation( SolidColorBrush.ColorProperty, caAnimate );
 		}
 
 		#endregion Constructors (Inits)
