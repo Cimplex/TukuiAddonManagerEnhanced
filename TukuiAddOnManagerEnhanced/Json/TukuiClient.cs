@@ -28,27 +28,44 @@ namespace TukuiAddOnManagerEnhanced.Json
 			UserThumbnail = new GenericDependencyProperty<TukuiClient, ImageSource>( this, "UserThumbnail", null );
 		}
 
-		public void BeginLogin( String Username, String Password, TukuiActionCallback Callback )
+		public void BeginLogin( String Username, String Password, TukuiActionCallback Callback, object source = null )
 		{
 			ThreadPool.QueueUserWorkItem(
 				o => {
 					//http://tukui.org/api.php?username=DrPepper&password=ItTasteSoGoodHihi
 
-					using( WebClient client = new WebClient() )
+					TukuiActionCallbackEventArgs args = new TukuiActionCallbackEventArgs( );
+					try
 					{
-						Uri myUrl = new Uri( "http://tukui.org/api.php?username="
-							+ System.Net.WebUtility.UrlEncode( Username )
-							+ "&password="
-							+ System.Net.WebUtility.UrlEncode( Password ) );
-
-						string jsonResult = client.DownloadString( myUrl.AbsoluteUri );
-						List<TukuiUser> user = JsonConvert.DeserializeObject<List<TukuiUser>>( jsonResult );
-						CurrentUser.SafeValue = user[0];
-
-						if ( CurrentUser.SafeValue.status == "OK")
+						using ( WebClient client = new WebClient( ) )
 						{
-							UpdateImage( CurrentUser.SafeValue.avatar );
+							Uri myUrl = new Uri( "http://tukui.org/api.php?username="
+								+ System.Net.WebUtility.UrlEncode( Username )
+								+ "&password="
+								+ System.Net.WebUtility.UrlEncode( Password ) );
+
+							string jsonResult = client.DownloadString( myUrl.AbsoluteUri );
+							List<TukuiUser> user = JsonConvert.DeserializeObject<List<TukuiUser>>( jsonResult );
+							TukuiUser tempUser = user[ 0 ];
+
+							if ( tempUser.status == "OK" )
+							{
+								UpdateImage( tempUser.avatar );
+								CurrentUser.SafeValue = tempUser;
+							}
+							else
+							{
+								args.Error = TukuiExceptions.WrongUsernameOrPassword;
+							}
 						}
+					}
+					catch( Exception ex )
+					{
+						args.Error = ex;
+					}
+					finally
+					{
+						Callback( source ?? this, args );
 					}
 				} );
 		}

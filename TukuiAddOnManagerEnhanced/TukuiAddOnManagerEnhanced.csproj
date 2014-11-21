@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Json\TukuiClient.cs" />
+    <Compile Include="Utilities\DispatcherSafeStart.cs" />
     <Compile Include="Utilities\SafeGenericDependencyProperties.cs" />
     <Compile Include="Utilities\TukuiActionCallback.cs" />
     <Page Include="DEV\DevLoginWindow.xaml">
@@ -161,6 +162,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assests\Artwork\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\UpperLeftMenuBar.png" />
+    <Resource Include="Assests\Artwork\UpperRightMenuBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assests\Artwork\UpperMiddleMenuBar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

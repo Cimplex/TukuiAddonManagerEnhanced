@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -78,8 +79,8 @@ namespace TukuiAddOnManagerEnhanced
 			this.Activated += MainWindow_ActivatedChange;
 			this.Deactivated += MainWindow_ActivatedChange;
 
-
 			// Register UI Controls Events
+			MyClient = new TukuiClient( );
 
 			// Init Animations
 			InitAnimations( );
@@ -97,7 +98,7 @@ namespace TukuiAddOnManagerEnhanced
 			if ( this.IsActive )
 				caAnimate.To = Color.FromArgb( 0xFF, 0x2E, 0x2E, 0x2E );
 			else
-				caAnimate.To = Color.FromArgb( 0xFF, 0x4B, 0x4B, 0x4B );
+				caAnimate.To = Color.FromArgb( 0xFF, 0x90, 0x90, 0x90 );
 
 			currentBrush.BeginAnimation( SolidColorBrush.ColorProperty, caAnimate );
 		}
@@ -205,10 +206,10 @@ namespace TukuiAddOnManagerEnhanced
 		private void MainWindow_Loaded( object sender, RoutedEventArgs e )
 		{
 #if DEBUG
-			DevLoginWindow devWindow = new DevLoginWindow( );
-			devWindow.Show( );
+			//DevLoginWindow devWindow = new DevLoginWindow( );
+			//devWindow.Show( );
 #endif
-
+			ChangeUserNameAnimation( false );
 		}
 
 		#endregion Window Event Handlers
@@ -275,26 +276,12 @@ namespace TukuiAddOnManagerEnhanced
 						case "SubMenuTextButton_Settings":
 							break;
 
-						case "SubMenuTextButton_Logout": Clicked_Logout( ); break;
+						case "SubMenuTextButton_Logout":
+							Clicked_Logout( );
+							break;
 					}
 				}
 			}
-		}
-
-
-
-		bool loginWindowVisible = false;
-		private void Clicked_Logout( )
-		{
-			if ( loginWindowVisible )
-			{
-				Animate_LoginRibbon_Hide( );
-			}
-			else
-			{
-				Animate_LoginRibbon_Show( );
-			}
-			loginWindowVisible = !loginWindowVisible;
 		}
 
 		bool updateVisible = false;
@@ -321,6 +308,8 @@ namespace TukuiAddOnManagerEnhanced
 		{
 			LoginRibbonAnimate.RenderTransform = new TranslateTransform( );
 			UpdateText.RenderTransform = new TranslateTransform( );
+			LoginTextHello.RenderTransform = new TranslateTransform( );
+			LoginTextUserName.RenderTransform = new TranslateTransform( );
 		}
 
 		public void Animate_LoginRibbon_Show( )
@@ -329,8 +318,8 @@ namespace TukuiAddOnManagerEnhanced
 
 			DoubleAnimation daMove = new DoubleAnimation( )
 			{
-				From = -60,
-				To = -50,
+				From = 70,
+				To = 80,
 				Duration = TimeSpan.FromMilliseconds( 300 ),
 				DecelerationRatio = 1,
 			};
@@ -344,14 +333,16 @@ namespace TukuiAddOnManagerEnhanced
 			};
 
 			// Reset the Opacity to 0
-			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, null );
-			LoginRibbonAnimate.Opacity = 0;
+			LoginRibbon.BeginAnimation( Grid.OpacityProperty, null );
+			LoginRibbon.Opacity = 0;
 
 			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
-			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, daFade );
+			LoginRibbon.BeginAnimation( Grid.OpacityProperty, daFade );
 
 			// Force Show the Container for the Ribbon
 			LoginRibbon.Visibility = Visibility.Visible;
+
+			TextBoxUsername.Focus( );
 		}
 
 		public void Animate_LoginRibbon_Hide( )
@@ -360,8 +351,8 @@ namespace TukuiAddOnManagerEnhanced
 
 			DoubleAnimation daMove = new DoubleAnimation( )
 			{
-				From = -50,
-				To = -60,
+				From = 80,
+				To = 70,
 				Duration = TimeSpan.FromMilliseconds( 300 ),
 				AccelerationRatio = 1,
 			};
@@ -379,9 +370,7 @@ namespace TukuiAddOnManagerEnhanced
 			daFade.Completed += ( object _sender, EventArgs _e ) => LoginRibbon.Visibility = Visibility.Collapsed;
 
 			currentTransform.BeginAnimation( TranslateTransform.YProperty, daMove );
-			LoginRibbonAnimate.BeginAnimation( Grid.OpacityProperty, daFade );
-
-			
+			LoginRibbon.BeginAnimation( Grid.OpacityProperty, daFade );
 		}
 
 		public void Animate_UpdateText_Show( )
@@ -421,11 +410,20 @@ namespace TukuiAddOnManagerEnhanced
 			currentTransform.BeginAnimation( TranslateTransform.YProperty, null );
 			currentTransform.Y = 0;
 
-			DoubleAnimation daMove = new DoubleAnimation( )
+			DoubleAnimation daMove1 = new DoubleAnimation( )
 			{
 				From = 0,
+				To = 6,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				DecelerationRatio = 1
+			};
+
+			DoubleAnimation daMove2 = new DoubleAnimation( )
+			{
+				From = 10,
 				To = -200,
-				Duration = TimeSpan.FromMilliseconds( 300 ),
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				//BeginTime = TimeSpan.FromMilliseconds( 300 ),
 				AccelerationRatio = 1,
 			};
 
@@ -433,24 +431,240 @@ namespace TukuiAddOnManagerEnhanced
 			{
 				From = 1,
 				To = 0,
-				BeginTime = TimeSpan.FromMilliseconds( 100 ),
-				Duration = TimeSpan.FromMilliseconds( 200 ),
+				BeginTime = TimeSpan.FromMilliseconds( 300 ),
+				Duration = TimeSpan.FromMilliseconds( 100 ),
 			};
 
+			daMove1.Completed += ( object _sender, EventArgs _e ) => currentTransform.BeginAnimation( TranslateTransform.XProperty, daMove2 );
 
 			// When the animation is complete, hide the login ribbon's container
 			daFade.Completed += ( object _sender, EventArgs _e ) => UpdateText.Visibility = Visibility.Collapsed;
 
-			currentTransform.BeginAnimation( TranslateTransform.XProperty, daMove );
+			currentTransform.BeginAnimation( TranslateTransform.XProperty, daMove1 );
 			UpdateText.BeginAnimation( Grid.OpacityProperty, daFade );
 		}
 
+		public void ChangeUserNameAnimation( bool delayed = true )
+		{
+			TranslateTransform helloTransform = LoginTextHello.RenderTransform as TranslateTransform;
+			TranslateTransform nameTransform = LoginTextUserName.RenderTransform as TranslateTransform;
+
+			// Reset Opacity to 0
+			LoginTextHello.BeginAnimation( TextBlock.OpacityProperty, null );
+			LoginTextUserName.BeginAnimation( TextBlock.OpacityProperty, null );
+			ImageUserIcon.BeginAnimation( Ellipse.OpacityProperty, null );
+
+			LoginTextHello.Opacity = 0;
+			LoginTextUserName.Opacity = 0;
+			ImageUserIcon.Opacity = 0;
+
+			ElasticEase ease = new ElasticEase( )
+			{
+				Oscillations = 1,
+				Springiness = 6,
+			};
+
+			DoubleAnimation daHelloMove = new DoubleAnimation( )
+			{
+				To = 0,
+				From = 158,
+				Duration = TimeSpan.FromMilliseconds( 1600 ),
+				BeginTime = delayed ? TimeSpan.FromSeconds( .7 ) : TimeSpan.Zero,
+				//AccelerationRatio = 1,
+				EasingFunction = ease,
+			};
+
+			DoubleAnimation daNameMove = new DoubleAnimation( )
+			{
+				To = 0,
+				From = 28,
+				Duration = TimeSpan.FromMilliseconds(800),
+				DecelerationRatio = 1,
+				BeginTime = delayed ? TimeSpan.FromSeconds( 1.7 ) : TimeSpan.FromSeconds( 1 ),
+
+				EasingFunction = ease,
+			};
+
+			DoubleAnimation daHelloFade = new DoubleAnimation( )
+			{
+				To = 1,
+				From = 0,
+				Duration = TimeSpan.FromMilliseconds( 400 ),
+				BeginTime = delayed ? TimeSpan.FromSeconds( .7 ) : TimeSpan.Zero,
+				AccelerationRatio = 1,
+			};
+
+			DoubleAnimation daNameFade = new DoubleAnimation( )
+			{
+				To = 1,
+				From = 0,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				BeginTime = delayed ? TimeSpan.FromSeconds( 1.7 ) : TimeSpan.FromSeconds( 1 ),
+			};
+
+			DoubleAnimation daIconFade = new DoubleAnimation( )
+			{
+				To = 1,
+				From = 0,
+				Duration = TimeSpan.FromMilliseconds( 200 ),
+				BeginTime = delayed ? TimeSpan.FromSeconds( 1.7 ) : TimeSpan.FromSeconds( 1 ),
+			};
+
+			helloTransform.BeginAnimation( TranslateTransform.XProperty, daHelloMove );
+			nameTransform.BeginAnimation( TranslateTransform.XProperty, daNameMove );
+
+			LoginTextHello.BeginAnimation( TextBlock.OpacityProperty, daHelloFade );
+			LoginTextUserName.BeginAnimation( TextBlock.OpacityProperty, daNameFade );
+
+			ImageUserIcon.BeginAnimation( Ellipse.OpacityProperty, daIconFade );
+		}
 
 		#endregion Animations
 
+		#region Login Ribbon - Control Events and UI Logic
+
+		private void Clicked_Logout( )
+		{
+			// This is only a Safe function that should only be called from the dispatcher
+			// Look to see if we have a user
+			if ( MyClient.CurrentUser.HasValue )
+			{
+				// Logout
+				MyClient.CurrentUser.Value = null;
+				ImageUserIcon.Fill = null;
+
+				ChangeUserNameAnimation( );
+				LoginTextHello.Text = "HEY YOU,";
+				LoginTextUserName.Text = "PLEASE SIGN IN";
+
+				SubMenuTextButton_Logout.Text = "SIGN IN";
+			}
+			else
+			{
+				// Show Login Ribbon
+				Animate_LoginRibbon_Show( );
+			}
+		}
+
 		private void buttonCancelLogin_Click( object sender, RoutedEventArgs e )
 		{
-			Clicked_Logout( );
+			// Clear Username and Password remnants 
+			TextBoxUsername.Text = "";
+			TextBoxPassword.Password = "";
+			Animate_LoginRibbon_Hide( );
 		}
+
+		private void buttonLogin_Click( object sender, RoutedEventArgs e )
+		{
+			// Attempt to Login with user's credentials
+			MyClient.BeginLogin( TextBoxUsername.Text, TextBoxPassword.Password, BeginLogin_Callback );
+
+			// Clear Username and Password remnants 
+			TextBoxUsername.Text = "";
+			TextBoxPassword.Password = "";
+			Animate_LoginRibbon_Hide( );
+		}
+
+		private void BeginLogin_Callback( object sender, TukuiActionCallbackEventArgs e )
+		{
+			// NOTE: Unsafe Callback not on the Dispatcher
+
+			if ( e.Error is Exception )
+			{
+				// Show an error message
+				SafeThread.Start( ( ) =>
+				{
+					UpdateText.Text = e.Error.Message;
+					Animate_UpdateText_Show( );
+				} );
+			}
+			else
+			{
+				TukuiUser currentUser = MyClient.CurrentUser.SafeValue;
+
+				SafeThread.Start( ( ) =>
+				{
+					ChangeUserNameAnimation( );
+					LoginTextHello.Text = "HELLO,";
+					LoginTextUserName.Text = currentUser.nickname.ToUpper( );
+					ImageUserIcon.Fill = new ImageBrush( ) { ImageSource = MyClient.UserThumbnail.Value };
+
+					SubMenuTextButton_Logout.Text = "SIGN OUT";
+				} );
+			}
+		}
+
+		private void TextBoxUsername_GotKeyboardFocus( object sender, KeyboardFocusChangedEventArgs e )
+		{
+			TextBox currentControl = sender as TextBox;
+			currentControl.SelectAll( );
+		}
+
+		private void TextBoxPassword_GotKeyboardFocus( object sender, KeyboardFocusChangedEventArgs e )
+		{
+			PasswordBox currentControl = sender as PasswordBox;
+			currentControl.SelectAll( );
+		}
+
+		private void TextBoxPassword_KeyUp( object sender, KeyEventArgs e )
+		{
+			if ( e.Key == Key.Enter )
+			{
+				buttonLogin_Click( null, null );
+			}
+		}
+
+		private void TextBoxUsername_TextChanged( object sender, TextChangedEventArgs e )
+		{
+			if ( TextBoxUsername.Text.Length > 0 )
+			{
+				DoubleAnimation daFade = new DoubleAnimation( )
+				{
+					Duration = TimeSpan.FromMilliseconds( 100 ),
+					To = 0,
+				};
+
+				TextBlockUsernameLabel.BeginAnimation( TextBlock.OpacityProperty, daFade );
+			}
+			else
+			{
+				DoubleAnimation daFade = new DoubleAnimation( )
+				{
+					Duration = TimeSpan.FromMilliseconds( 200 ),
+					To = 1,
+				};
+
+				TextBlockUsernameLabel.BeginAnimation( TextBlock.OpacityProperty, daFade );
+			}
+		}
+
+		private void TextBoxPassword_PasswordChanged( object sender, RoutedEventArgs e )
+		{
+			if ( !this.IsLoaded ) return;
+			if ( TextBoxPassword.Password.Length > 0 )
+			{
+				DoubleAnimation daFade = new DoubleAnimation( )
+				{
+					Duration = TimeSpan.FromMilliseconds( 100 ),
+					To = 0,
+				};
+
+				TextBlockPasswordLabel.BeginAnimation( TextBlock.OpacityProperty, daFade );
+			}
+			else
+			{
+				DoubleAnimation daFade = new DoubleAnimation( )
+				{
+					Duration = TimeSpan.FromMilliseconds( 200 ),
+					To = 1,
+				};
+
+				TextBlockPasswordLabel.BeginAnimation( TextBlock.OpacityProperty, daFade );
+			}
+		}
+
+		#endregion Login Ribbon - Control Events and UI Logic
+
+		
 	}
 }

@@ -22,5 +22,10 @@ namespace TukuiAddOnManagerEnhanced.Utilities
 		}
 	}
 
+	public static class TukuiExceptions
+	{
+		public static Exception WrongUsernameOrPassword { get { return new Exception( "There was a problem with your username or password. Please try again." ); } }
+	}
+
 	public delegate void TukuiActionCallback( object sender, TukuiActionCallbackEventArgs e );
 }

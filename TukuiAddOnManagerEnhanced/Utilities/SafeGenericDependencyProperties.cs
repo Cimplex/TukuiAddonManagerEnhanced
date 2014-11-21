@@ -213,7 +213,15 @@ namespace TukuiAddOnManagerEnhanced.Utilities
 
 		public Boolean HasValue
 		{
-			get { return !MyParent.GetValue( Property ).Equals( DefaultValue ); }
+			get
+			{
+				object value = MyParent.GetValue( Property );
+				
+				if ( value == null )
+					return DefaultValue != null;
+
+				return !value.Equals( DefaultValue );
+			}
 		}
 
 		public Boolean HasSafeValue
